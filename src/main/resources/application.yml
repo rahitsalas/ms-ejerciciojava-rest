@@ -1,0 +1,26 @@
+spring:
+  profiles:
+    active: prod
+  application:
+    name: ms-ejerciciojava-rest  
+# Configuración de H2
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: 
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+# Configuración de H2
+
+codigo:
+ mensaje:
+  idf1: "Se encontro el Email Registrado: " 
+  idf2: 
+  idt1: "Se genero un error en la consulta/escritura DB: "
+  idt2:
+  idt3: "Se genero un Error Inesperado: "
