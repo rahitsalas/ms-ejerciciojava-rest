@@ -59,7 +59,7 @@ public class Usuario {
     private String token;
     
     @Column(name = "is_Active")
-    private boolean isActive = true;
+    private boolean isActive;
     
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Telefono> telefonos;

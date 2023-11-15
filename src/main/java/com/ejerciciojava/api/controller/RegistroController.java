@@ -1,6 +1,8 @@
 package com.ejerciciojava.api.controller;
 
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,8 +30,8 @@ public class RegistroController {
 
 	
 	@PostMapping(value = "/registro", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<RegistroResponse> consultarRecibos(
-			 @RequestBody @Validated RegistroRequest request) throws ServiceTechnicalException, ServiceFunctionalException, DBException{
+	public ResponseEntity<RegistroResponse> registrarUsuario(
+			 @RequestBody @Valid RegistroRequest request) throws ServiceTechnicalException, ServiceFunctionalException, DBException{
 		RegistroResponse responseService = registroService.registrar(request);
 		return new ResponseEntity<>(responseService, HttpStatus.OK);
 	}

@@ -44,6 +44,12 @@ public class UsuarioBuilder {
         return this;
     }
     
+
+    public UsuarioBuilder withActive(boolean active) {
+        usuario.setActive(active);
+        return this;
+    }
+    
  
     public Usuario build() {
         return usuario;

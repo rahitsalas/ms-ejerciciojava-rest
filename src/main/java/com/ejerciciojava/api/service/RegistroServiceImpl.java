@@ -39,7 +39,6 @@ public class RegistroServiceImpl implements RegistroService {
 	TelefonoRepository telefonoRepository;
 
 	@Override
-	@Transactional
 	public RegistroResponse registrar(RegistroRequest request)
 			throws ServiceTechnicalException, ServiceFunctionalException, DBException {
 		String metodoController = Constantes.METODO_USUARIO_REGISTRAR;
@@ -56,7 +55,7 @@ public class RegistroServiceImpl implements RegistroService {
 
 			}
 			usuarioNuevo = guardarUsuarioConTelefonos(request);
-		} catch (DataAccessException e) {
+		} catch (DBException e) {
 			String errorMessage = applicationProperties.MensajeIdt1 + e.getMessage();
 			Utilitario.dispararExcepcionErrorBDService(origen, errorMessage, metodoController, origen,
 					new Exception(errorMessage));
@@ -69,22 +68,27 @@ public class RegistroServiceImpl implements RegistroService {
 	}
 
 	@Transactional
-	private Usuario guardarUsuarioConTelefonos(RegistroRequest request) {
+	private Usuario guardarUsuarioConTelefonos(RegistroRequest request) throws DBException {
 		Usuario usuarioNuevo = parseUsuario(request);
-		usuarioNuevo = usuarioRepository.save(usuarioNuevo);
-		if (request.getPhones() != null && !request.getPhones().isEmpty()) {
-			guardarTelefonos(request.getPhones(), usuarioNuevo);
-		}
-		Optional<Usuario> usuarioOptional = usuarioRepository.findById(usuarioNuevo.getId());
-		if (usuarioOptional.isPresent()) {
-			usuarioNuevo = usuarioOptional.get();
+		try {
+
+			usuarioNuevo = usuarioRepository.save(usuarioNuevo);
+			if (request.getPhones() != null && !request.getPhones().isEmpty()) {
+				guardarTelefonos(request.getPhones(), usuarioNuevo);
+			}
+			Optional<Usuario> usuarioOptional = usuarioRepository.findById(usuarioNuevo.getId());
+			if (usuarioOptional.isPresent()) {
+				usuarioNuevo = usuarioOptional.get();
+			}
+		} catch (Exception ex) {
+			throw new DBException(ex);
 		}
 		return usuarioNuevo;
 	}
 
 	private Usuario parseUsuario(RegistroRequest registroRequest) {
 		return new UsuarioBuilder().withName(registroRequest.getName()).withEmail(registroRequest.getEmail())
-				.withPassword(registroRequest.getPassword()).build();
+				.withPassword(registroRequest.getPassword()).withActive(true).build();
 	}
 
 	private Telefono parseTelefono(PhoneDTO phoneDTO, Usuario usuario) {

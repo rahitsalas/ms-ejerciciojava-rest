@@ -1,0 +1,14 @@
+{
+    "name": "Juan Rodriguez",
+    "email":"email2@emaid4l.com",
+    "phones": [{
+        "number":"959595935",
+        "cityCode":"asd",
+        "countryCode":"asd"
+    },{
+        "number":"959595925",
+        "cityCode":"asd",
+        "countryCode":"asd"
+    }]
+
+}

@@ -1,0 +1,15 @@
+{
+    "name": "",
+    "password": "Hunter22",
+    "email":"email2@emaid4.lcom",
+    "phones": [{
+        "number":"959595935",
+        "cityCode":"asd",
+        "countryCode":"asd"
+    },{
+        "number":"959595925",
+        "cityCode":"asd",
+        "countryCode":"asd"
+    }]
+
+}
