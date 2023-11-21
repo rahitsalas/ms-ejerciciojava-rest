@@ -1,9 +1,6 @@
 package com.ejerciciojava.api.util;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +13,7 @@ import com.ejerciciojava.api.exception.ServiceFunctionalException;
 import com.ejerciciojava.api.exception.ServiceTechnicalException;
 //import io.jsonwebtoken.Jwts;
 //import io.jsonwebtoken.SignatureAlgorithm;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class Utilitario implements Serializable {
@@ -43,6 +41,25 @@ public class Utilitario implements Serializable {
 		throw new ServiceTechnicalException.Builder(e).withCode(codigo).withMessage(mensaje).withOrigin(origen)
 				.atMethod(metodoController).build();
 	}
+	
+	public static String printJsonFormat(Object object) {
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			return mapper.writeValueAsString(object);
+		} catch (Exception ex) {
+			logger.info("Unable to parse argument error: {}".concat(ex.toString()));
+		}
+		return object.toString();
+	}
+	
+	public static Object getCause(Throwable e) {
+		return e.getCause() != null ? e.getCause().getMessage() : getMessage(e);
+	}
+	
+	public static String getMessage(Throwable e) {
+		return e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
+	}
+
 	
 //	public static String getJWTToken(String username) {
 //		String secretKey = "mySecretKey";

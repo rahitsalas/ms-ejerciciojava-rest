@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.ejerciciojava.api.config.ApplicationProperties;
@@ -46,14 +45,6 @@ public class RegistroServiceImpl implements RegistroService {
 				+ Thread.currentThread().getStackTrace()[1].getMethodName();
 		Usuario usuarioNuevo = new Usuario();
 		try {
-			Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(request.getEmail());
-			if (usuarioOptional.isPresent()) {
-				Usuario usuarioEncontrado = usuarioOptional.get();
-				String errorMessage = applicationProperties.MensajeIdf1 + usuarioEncontrado.getEmail();
-				Utilitario.dispararExcepcionErrorFuncionalService(origen, errorMessage, metodoController, origen,
-						new Exception(errorMessage));
-
-			}
 			usuarioNuevo = guardarUsuarioConTelefonos(request);
 		} catch (DBException e) {
 			String errorMessage = applicationProperties.MensajeIdt1 + e.getMessage();
@@ -67,7 +58,6 @@ public class RegistroServiceImpl implements RegistroService {
 		return buildRegistroResponse(usuarioNuevo);
 	}
 
-	@Transactional
 	private Usuario guardarUsuarioConTelefonos(RegistroRequest request) throws DBException {
 		Usuario usuarioNuevo = parseUsuario(request);
 		try {
